@@ -106,6 +106,11 @@ export class RedisClient implements IRedisClient {
     console.log(await this.write(data));
   }
 
+  async delete(key: string): Promise<void> {
+    const data: string[] = [RedisCommand.DEL, key];
+    console.log(await this.write(data));
+  }
+
   disconnect() {
     this.sock?.destroy();
   }

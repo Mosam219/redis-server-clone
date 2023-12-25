@@ -114,7 +114,7 @@ export class RedisDeserializer implements IRedisDeserializer {
 
     let output = "";
     let i = 0;
-    while (i < len && this.pos <= this.input.length) {
+    while (i < len && this.pos < this.input.length) {
       output += this.getCurrentToken();
       this.consumeToken();
       i++;
@@ -142,7 +142,7 @@ export class RedisDeserializer implements IRedisDeserializer {
   parseSimpleString() {
     let output = "";
     this.consumeToken("+");
-    while (this.pos <= this.input.length && this.getCurrentToken() != "\r") {
+    while (this.pos < this.input.length && this.getCurrentToken() != "\r") {
       output += this.getCurrentToken();
       this.consumeToken();
     }

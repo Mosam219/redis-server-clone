@@ -1,7 +1,6 @@
 import { RespArray } from "./types";
 
 const isValidRESP = (input: unknown): boolean => {
-  console.log(input, typeof input);
   if (
     typeof input === "string" ||
     typeof input === "number" ||
@@ -23,7 +22,6 @@ const isValidRESP = (input: unknown): boolean => {
 
 export class RedisSerializer {
   serialize(input: unknown, bulkString?: boolean) {
-    console.log(input);
     if (input === null) {
       return this.serializeNull();
     } else if (typeof input == "number") {

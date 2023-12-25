@@ -3,5 +3,6 @@ enum RedisCommand {
   ECHO = "ECHO",
   SET = "SET",
   GET = "GET",
+  DEL = "DEL",
 }
 export { RedisCommand };

@@ -13,6 +13,7 @@ export class RedisDataStore implements IRedisDataStore {
     return this.map.get(key);
   }
   deleteData(key: string) {
+    console.log(key);
     this.map.delete(key);
   }
 }

@@ -85,23 +85,36 @@ export class RedisServer implements IRedisServer {
     });
   }
   handleRequest(socket: net.Socket, output: string[]) {
-    const command = output[0];
-    switch (command) {
-      case RedisCommand.PING: {
-        this.handlePing(socket, output);
-        break;
+    try {
+      const command = output[0];
+      switch (command) {
+        case RedisCommand.PING: {
+          this.handlePing(socket, output);
+          break;
+        }
+        case RedisCommand.ECHO: {
+          this.handleEcho(socket, output);
+          break;
+        }
+        case RedisCommand.SET: {
+          this.handleSet(socket, output);
+          break;
+        }
+        case RedisCommand.GET: {
+          this.handleGet(socket, output);
+          break;
+        }
+        case RedisCommand.DEL: {
+          this.handleDelete(socket, output);
+          break;
+        }
+        default: {
+          throw new Error(`UNKNOWN_COMMAND: ${command}`);
+        }
       }
-      case RedisCommand.ECHO: {
-        this.handleEcho(socket, output);
-        break;
-      }
-      case RedisCommand.SET: {
-        this.handleSet(socket, output);
-        break;
-      }
-      case RedisCommand.GET: {
-        this.handleGet(socket, output);
-        break;
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message);
       }
     }
   }
@@ -148,7 +161,21 @@ export class RedisServer implements IRedisServer {
     }
     const key = output[1];
     const value = this.dataStore.getData(key);
+    if (typeof value !== "string") {
+      throw new Error(`INVALID type of value ${typeof value}`);
+    }
     socket.emit("sendResponse", value);
+  }
+  handleDelete(socket: net.Socket, output: string[]) {
+    if (!socket) {
+      throw new Error("socket not available");
+    }
+    if (!output) {
+      throw new Error("Invalid data");
+    }
+    const key = output[1];
+    this.dataStore.deleteData(key);
+    socket.emit("sendResponse", "+OK");
   }
   stopServer(): Promise<void> {
     return new Promise((res, rej) => {

@@ -19,7 +19,6 @@ describe("Testing redis commands", () => {
 
   test("Testing PING, and ECO", async () => {
     const randomString = randomBytes(1024).toString("ascii");
-    console.log("randomString huehue", randomString);
     const pingData = await client.ping(randomString);
     expect(pingData).toBe(randomString);
     const echoData = await client.echo(randomString);
