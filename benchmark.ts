@@ -1,8 +1,3 @@
-/**
- * This Code is inspired from the client benchmark code.
- * Link: https://github.com/redis/node-redis/blob/master/benchmark/lib/runner.js
- */
-
 import { randomBytes } from "crypto";
 import { createClient } from "redis";
 import { RedisServer } from "./redis_server";
@@ -14,16 +9,6 @@ const host = "redis://127.0.0.1:6379";
 
 const randomString = () => randomBytes(size).toString("ascii");
 
-/**
- * This function creates a Client, connects it to the server and returns two functions namely benchmark and teardown.
- *
- *    benchmark: This function returns a Promise that resolves various commands from the client library.
- *
- *    teardown: The function returns a Promise that disconnects the client.
- *
- * @async
- * @returns {unknown}
- */
 async function createJob() {
   const client = createClient({
     url: host,
